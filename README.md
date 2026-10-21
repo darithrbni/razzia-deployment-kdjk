@@ -31,8 +31,14 @@
 
 # Daftar Isi
 
-[Sekilas Tentang](#sekilas-tentang) | [Empat Script Utama](#empat-script-utama) | [Instalasi](#instalasi) | [Konfigurasi](#konfigurasi) | [Maintenance](#maintenance) | [Cara Pemakaian](#cara-pemakaian) | [Pembahasan](#pembahasan) | [Referensi](#referensi)
-:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
+- [Sekilas Tentang](#sekilas-tentang)
+- [Empat Script Utama](#empat-script-utama)
+- [Instalasi](#instalasi)
+- [Konfigurasi](#konfigurasi)
+- [Maintenance](#maintenance)
+- [Cara Pemakaian](#cara-pemakaian)
+- [Pembahasan](#pembahasan)
+- [Referensi](#referensi)
 
 
 ---
