@@ -8,7 +8,9 @@
 
 **Praktikum KDJK 2026/2027 · P1 — Kelompok 8**
 
-**Akses aplikasi Razzia pada: [razzia-kdjk.web.id](https://razzia-kdjk.web.id)**
+**Akses aplikasi Razzia sebagai user pada: [razzia-kdjk.web.id](https://razzia-kdjk.web.id)**
+
+**Akses aplikasi Razzia sebagai admin pada: [razzia-kdjk.web.id/manager](https://razzia-kdjk.web.id/manager)**
 
 `Ubuntu 24.04 LTS` · `Docker` · `Docker Compose` · `Razzia` · `Caddy` · `HTTPS`
 
@@ -29,10 +31,10 @@
 
 # Daftar Isi
 
-- [Sekilas Tentang](#sekilas-tentang)
-- [Instalasi](#instalasi)
-- [Empat Script Utama](#empat-script-utama)
-- [Konfigurasi](#konfigurasi)
+- [Sekilas Tentang](#📖-sekilas-tentang)
+- [Empat Script Utama](#📄-empat-script-utama)
+- [Instalasi](#🛠-instalasi)
+- [Konfigurasi](#⚙️-konfigurasi)
 - [Maintenance](#maintenance)
 - [Cara Pemakaian](#cara-pemakaian)
 - [Pembahasan](#pembahasan)
@@ -411,9 +413,7 @@ df -h
 
 ### Membuka Aplikasi
 
-Setelah deployment dan konfigurasi domain/HTTPS selesai, buka domain yang telah dikonfigurasi. Pada deployment kelompok ini, alamat yang digunakan adalah:
-
-**[https://razzia-kdjk.web.id](https://razzia-kdjk.web.id)**
+Setelah deployment dan konfigurasi domain/HTTPS selesai, buka domain yang telah dikonfigurasi. Pada deployment kami, alamat web yang digunakan adalah: **[https://razzia-kdjk.web.id](https://razzia-kdjk.web.id)**
 
 Jika domain belum dikonfigurasi atau HTTPS belum aktif, jalankan pemeriksaan berikut langsung pada VPS:
 
