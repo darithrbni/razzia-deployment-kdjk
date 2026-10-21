@@ -1,5 +1,7 @@
 <div align="center">
 
+![Razzia Banner](images/banner.png)
+
 # ⚡ RAZZIA
 ### Panduan Deployment Aplikasi Kuis Berbasis Web
 
@@ -12,6 +14,17 @@
 `Ubuntu 24.04` · `Docker Compose` · `Razzia` · `HTTPS`
 
 </div>
+
+## Anggota Kelompok
+
+| NIM | Nama |
+|---|---|
+| M0403241022 | Faisal Mumtaz Hidayat |
+| M0403241008 | Kafka Muhammad Arya |
+| M0403241104 | Daffa M. Robbani |
+| M0403241092 | Sinar Marthin Simanjuntak |
+| M0403241036 | Raihan Fikri |
+
 
 ## Daftar Isi
 
@@ -86,7 +99,7 @@ Browser ── HTTPS ──► Domain publik
 | Port aplikasi | `3000` pada loopback `127.0.0.1` |
 | Domain praktikum | `razzia-kdjk.web.id` |
 
-*(Gambar yang disarankan: diagram arsitektur deployment dengan ikon browser, domain, VPS, Caddy, Docker, dan Razzia.)*
+*(Opsional: tambahkan diagram arsitektur deployment yang memperlihatkan browser, domain, VPS, Caddy, Docker, dan Razzia.)*
 
 ---
 
@@ -442,7 +455,25 @@ curl -I http://127.0.0.1:3000/
 
 Alamat loopback tersebut hanya dapat digunakan dari VPS itu sendiri. Untuk mengakses aplikasi dari perangkat lain, selesaikan konfigurasi DNS dan reverse proxy terlebih dahulu.
 
-*(Screenshot 6: halaman utama Razzia pada browser.)*
+#### Tampilan aplikasi Razzia
+
+**1. Halaman utama sebelum bergabung ke sesi**
+
+![Tampilan utama Razzia sebelum memasukkan kode](images/1.png)
+
+*Tampilan awal aplikasi ketika pengguna belum memasukkan kode sesi.*
+
+**2. Ruang permainan saat menunggu peserta lain**
+
+![Tampilan Razzia setelah masuk dan menunggu pemain lain](images/2.png)
+
+*Tampilan ruang permainan setelah kode dimasukkan, ketika pemain lain masih ditunggu untuk bergabung.*
+
+**3. Demo kuis sedang berlangsung**
+
+![Tampilan Razzia saat demo kuis](images/3.png)
+
+*Tampilan aplikasi ketika sesi demo kuis sedang berlangsung.*
 
 ### 2. Alur penggunaan kuis
 
