@@ -2,11 +2,11 @@
 
 ![Razzia Logo](images/logo.svg)
 
-### Panduan Deployment Aplikasi Kuis Berbasis Web
-
-**Praktikum KDJK 2026/2027 · P1 — Kelompok 8**
+### Razzia, Aplikasi Kuis Berbasis Web
 
 *Dari aplikasi lokal menuju layanan kuis yang dapat diakses melalui server VPS.*
+
+**Praktikum KDJK 2026/2027 · P1 — Kelompok 8**
 
 ---
 
@@ -14,7 +14,7 @@
 
 </div>
 
-## Anggota Kelompok
+# 👥 Anggota Kelompok
 
 | NIM | Nama |
 |---|---|
@@ -25,7 +25,7 @@
 | M0403241036 | Raihan Fikri |
 
 
-## Daftar Isi
+# Daftar Isi
 
 - [Sekilas Tentang](#sekilas-tentang)
 - [Instalasi](#instalasi)
@@ -36,30 +36,22 @@
 - [Pembahasan](#pembahasan)
 - [Referensi](#referensi)
 
-> **Catatan status praktikum**
->
-> Panduan ini mendokumentasikan deployment Razzia pada VPS Ubuntu. Skrip `setup.sh`, `backup.sh`, `restore.sh`, dan `update.sh` menangani deployment serta pemeliharaan dasar aplikasi. Pemeriksaan HTTP lokal bukan bukti bahwa DNS, HTTPS, dan akses dari internet sudah berfungsi. Lengkapi pengaturan reverse proxy dan TLS, lalu lakukan pengujian publik sebelum menyatakan layanan siap digunakan.
 
 ---
 
-## Sekilas Tentang
+# 📖 Sekilas Tentang
 
 ### Apa itu Razzia?
 
-[Razzia](https://github.com/ralex91/razzia) adalah aplikasi kuis berbasis web yang dapat di-host sendiri (*self-hosted*). Aplikasi ini cocok digunakan untuk membuat sesi kuis yang diikuti peserta melalui browser.
+[Razzia](https://github.com/ralex91/razzia) adalah aplikasi kuis berbasis web yang dapat di-*host* sendiri (*self-hosted*). Aplikasi ini memungkinkan pengelola membuat dan menjalankan sesi kuis, sementara peserta dapat bergabung dan menjawab pertanyaan melalui browser.
 
-Dalam praktikum ini, fokus pekerjaan bukan membuat aplikasi kuis dari nol, melainkan **men-deploy aplikasi open-source ke VPS**, mengelola konfigurasinya, serta menyiapkan prosedur backup, restore, dan update.
-
-### Tujuan praktikum
-
-1. Menjalankan aplikasi web pada VPS berbasis Ubuntu.
-2. Menggunakan Docker dan Docker Compose untuk mengelola container.
-3. Mengatur password manager dengan aman.
-4. Memahami pemetaan port dan peran reverse proxy.
-5. Menyediakan skrip untuk backup, restore, dan update.
-6. Menguji aplikasi dan mendokumentasikan hasilnya.
+Dengan pendekatan *self-hosted*, Razzia dapat dijalankan pada server milik sendiri sehingga pengelola memiliki kendali atas konfigurasi aplikasi dan pengelolaan infrastrukturnya.
 
 ### Arsitektur deployment
+
+Razzia dijalankan dalam container Docker pada VPS Ubuntu dan dikelola menggunakan Docker Compose. Agar dapat diakses melalui domain dengan koneksi HTTPS, aplikasi ditempatkan di belakang reverse proxy, seperti Caddy.
+
+Alur komunikasi aplikasi adalah sebagai berikut:
 
 ```text
 Pengguna / Peserta
@@ -83,7 +75,9 @@ Browser ── HTTPS ──► Domain publik
                  /opt/razzia/config
 ```
 
-> Reverse proxy dan HTTPS merupakan lapisan terpisah dari skrip instalasi Razzia. Skrip `setup.sh` hanya memeriksa endpoint HTTP lokal pada `127.0.0.1:3000`; skrip tersebut tidak membuat konfigurasi Caddy atau sertifikat TLS.
+Pemetaan port 127.0.0.1:3000:3000 membatasi publikasi port aplikasi ke loopback VPS. Dengan demikian, akses publik diarahkan melalui reverse proxy, bukan langsung melalui port aplikasi.
+
+Catatan: Docker Compose mengelola container Razzia, sedangkan konfigurasi Caddy, DNS domain, dan sertifikat TLS merupakan bagian terpisah yang perlu disiapkan agar aplikasi dapat diakses melalui HTTPS.
 
 ### Lingkungan praktikum
 
@@ -102,7 +96,7 @@ Browser ── HTTPS ──► Domain publik
 
 ---
 
-## Instalasi
+# 🛠 Instalasi
 
 ### 1. Prasyarat
 
@@ -217,7 +211,7 @@ Jika endpoint merespons, aplikasi telah melewati pemeriksaan HTTP lokal. Ini bel
 
 ---
 
-## Konfigurasi
+# Konfigurasi
 
 ### 1. Struktur direktori
 
@@ -316,7 +310,7 @@ Hasil uji harus diperiksa bersama status DNS, sertifikat TLS, dan log reverse pr
 
 ---
 
-## Maintenance
+# Maintenance
 
 Pemeliharaan membantu menjaga konfigurasi tetap dapat dipulihkan dan mengurangi risiko saat melakukan perubahan.
 
@@ -407,7 +401,7 @@ df -h
 
 ---
 
-## Otomatisasi
+# Otomatisasi
 
 Empat skrip shell disiapkan untuk menyederhanakan pekerjaan berulang. Jalankan dari direktori tempat skrip disimpan atau gunakan path lengkap.
 
@@ -438,7 +432,7 @@ Empat skrip shell disiapkan untuk menyederhanakan pekerjaan berulang. Jalankan d
 
 ---
 
-## Cara Pemakaian
+# Cara Pemakaian
 
 ### 1. Membuka aplikasi
 
@@ -530,7 +524,7 @@ Lengkapi tabel berikut berdasarkan pengujian nyata. Ubah status setelah setiap p
 
 ---
 
-## Pembahasan
+# Pembahasan
 
 ### Kelebihan
 
@@ -566,7 +560,7 @@ Perbandingan berikut bersifat umum. Kemampuan rinci tiap produk bergantung pada 
 
 ---
 
-## Referensi
+# Referensi
 
 1. Razzia — repositori sumber aplikasi.  
    https://github.com/ralex91/razzia
