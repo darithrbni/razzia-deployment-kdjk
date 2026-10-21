@@ -1,8 +1,8 @@
 <div align="center">
 
-![Banner](images/banner.png)
+# Razzia, Aplikasi Kuis Berbasis Web
 
-## Razzia, Aplikasi Kuis Berbasis Web
+![Banner](images/banner.png)
 
 **Dari aplikasi lokal menuju layanan kuis yang dapat diakses melalui server VPS.**
 
