@@ -49,13 +49,13 @@
 
 ### Apa itu Razzia?
 
-[Razzia](https://github.com/ralex91/razzia) adalah aplikasi kuis berbasis web yang dapat di-*host* sendiri (*self-hosted*). Aplikasi ini memungkinkan pengelola membuat dan menjalankan sesi kuis, sementara peserta dapat bergabung dan menjawab pertanyaan melalui browser.
+[Razzia](https://github.com/ralex91/razzia) adalah aplikasi kuis berbasis web yang dapat di-*host* sendiri (*self-hosted*). Aplikasi ini memungkinkan pengelola membuat dan menjalankan sesi kuis. Peserta dapat bergabung melalui browser dan menjawab pertanyaan yang diberikan.
 
 Dengan pendekatan *self-hosted*, Razzia dapat dijalankan pada server milik sendiri sehingga pengelola memiliki kendali atas konfigurasi aplikasi dan pengelolaan infrastrukturnya.
 
 ### Arsitektur deployment
 
-Razzia dijalankan dalam container Docker pada VPS Ubuntu dan dikelola menggunakan Docker Compose. Agar dapat diakses melalui domain dengan koneksi HTTPS, aplikasi ditempatkan di belakang reverse proxy, seperti Caddy.
+Razzia dijalankan dalam container Docker pada VPS Ubuntu dan dikelola menggunakan Docker Compose. Agar dapat diakses melalui domain dengan HTTPS, permintaan dari pengguna diteruskan ke aplikasi melalui reverse proxy, seperti Caddy.
 
 Alur komunikasi aplikasi adalah sebagai berikut:
 

@@ -1,0 +1,20 @@
+# Environment dan rahasia
+.env
+.env.*
+!.env.example
+
+# Backup dan arsip
+*.tar.gz
+*.bak
+
+# Log dan file sementara
+*.log
+*.tmp
+*.swp
+
+# Editor
+.idea/
+
+# Sistem operasi
+.DS_Store
+Thumbs.db
