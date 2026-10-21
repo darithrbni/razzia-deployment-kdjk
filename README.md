@@ -4,15 +4,17 @@
 
 ## Razzia, Aplikasi Kuis Berbasis Web
 
-*Dari aplikasi lokal menuju layanan kuis yang dapat diakses melalui server VPS.*
+**Dari aplikasi lokal menuju layanan kuis yang dapat diakses melalui server VPS.**
 
 **Praktikum KDJK 2026/2027 · P1 — Kelompok 8**
 
-**Akses aplikasi pada [razzia-kdjk.web.id](https://razzia-kdjk.web.id)**
+**Akses aplikasi Razzia pada: [razzia-kdjk.web.id](https://razzia-kdjk.web.id)**
+
+![Banner](images/banner.png)
+
+`Ubuntu 24.04 LTS` · `Docker` · `Docker Compose` · `Razzia` · `Caddy` · `HTTPS`
 
 ---
-
-`Ubuntu 24.04` · `Docker Compose` · `Razzia` · `HTTPS`
 
 </div>
 
@@ -409,7 +411,7 @@ df -h
 
 # 💡 Cara Pemakaian
 
-### 1. Membuka Aplikasi
+### Membuka Aplikasi
 
 Setelah deployment dan konfigurasi domain/HTTPS selesai, buka domain yang telah dikonfigurasi. Pada deployment kelompok ini, alamat yang digunakan adalah:
 
@@ -423,7 +425,7 @@ curl -I http://127.0.0.1:3000/
 
 Alamat loopback tersebut hanya dapat digunakan dari VPS itu sendiri. Untuk mengakses aplikasi dari perangkat lain, selesaikan konfigurasi DNS dan reverse proxy terlebih dahulu.
 
-### 2. Peserta (User)
+### Sisi Peserta (User)
 
 1. Buka aplikasi Razzia melalui browser.
 ![Tampilan Awal User](images/1.png)
@@ -433,7 +435,7 @@ Alamat loopback tersebut hanya dapat digunakan dari VPS itu sendiri. Untuk menga
 4. Jawab pertanyaan yang ditampilkan sebelum waktu habis.
 5.[Menjawab Pertanyaan Kuis](images/3.png)
 
-### 3. Admin (Manager)
+### Sisi Admin (Manager)
 
 1. Buka aplikasi Razzia dan masuk ke halaman manager menggunakan password manager.
 ![Tampilan Awal Manager](images/4.png)
