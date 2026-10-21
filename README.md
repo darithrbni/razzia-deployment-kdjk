@@ -31,17 +31,13 @@
 
 # Daftar Isi
 
-- [Sekilas Tentang](#📖-sekilas-tentang)
-- [Empat Script Utama](#📄-empat-script-utama)
-- [Instalasi](#🛠-instalasi)
-- [Konfigurasi](#⚙️-konfigurasi)
-- [Maintenance](#maintenance)
-- [Cara Pemakaian](#cara-pemakaian)
-- [Pembahasan](#pembahasan)
-- [Referensi](#referensi)
+[Sekilas Tentang](#sekilas-tentang) | [Empat Script Utama](#empat-script-utama) | [Instalasi](#instalasi) | [Konfigurasi](#konfigurasi) | [Maintenance](#maintenance) | [Cara Pemakaian](#cara-pemakaian) | [Pembahasan](#pembahasan) | [Referensi](#referensi)
+:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:
 
 
 ---
+
+<a id="sekilas-tentang"></a>
 
 # 📖 Sekilas Tentang
 
@@ -98,6 +94,8 @@ Catatan: Docker Compose mengelola container Razzia, sedangkan konfigurasi Caddy,
 
 ---
 
+<a id="empat-script-utama"></a>
+
 # 📄 Empat Script Utama
 
 Proyek ini menyediakan empat script shell untuk membantu pengelolaan aplikasi Razzia di VPS. Setiap script memiliki fungsi tersendiri, mulai dari instalasi awal hingga pencadangan, pemulihan, dan pembaruan aplikasi.
@@ -112,6 +110,8 @@ Proyek ini menyediakan empat script shell untuk membantu pengelolaan aplikasi Ra
 Keempat script tersebut dirancang untuk menyederhanakan pengelolaan aplikasi dan mengurangi kebutuhan menjalankan langkah-langkah secara manual. Penjelasan mengenai prasyarat, cara penggunaan, serta proses instalasi dan pemeliharaan tersedia pada bagian berikutnya.
 
 ---
+
+<a id="instalasi"></a>
 
 # 🛠 Instalasi
 
@@ -222,6 +222,8 @@ Jika endpoint merespons, aplikasi telah melewati pemeriksaan HTTP lokal. Ini bel
 
 ---
 
+<a id="konfigurasi"></a>
+
 # ⚙️ Konfigurasi
 
 ### 1. Struktur direktori
@@ -317,6 +319,8 @@ curl -I https://quiz.example.com
 
 ---
 
+<a id="maintenance"></a>
+
 # 🔧 Maintenance
 
 Pemeliharaan membantu menjaga konfigurasi tetap dapat dipulihkan dan mengurangi risiko saat melakukan perubahan.
@@ -406,8 +410,9 @@ sudo docker compose -f /opt/razzia/compose.yml logs --tail=100
 df -h
 ```
 
-
 ---
+
+<a id="cara-pemakaian"></a>
 
 # 💡 Cara Pemakaian
 
@@ -449,6 +454,8 @@ Alamat loopback tersebut hanya dapat digunakan dari VPS itu sendiri. Untuk menga
 
 ---
 
+<a id="pembahasan"></a>
+
 # 💬 Pembahasan
 
 ### ✅ Kelebihan
@@ -484,6 +491,8 @@ Perbandingan berikut bersifat umum. Kemampuan rinci tiap produk bergantung pada 
 **Kesimpulan:** Razzia cocok untuk praktikum yang berfokus pada deployment dan administrasi aplikasi web karena mahasiswa dapat mempelajari container, konfigurasi server, domain, reverse proxy, serta pemeliharaan. Sebaliknya, layanan kuis terkelola umumnya lebih mudah digunakan tanpa menyiapkan dan merawat server sendiri.
 
 ---
+
+<a id="referensi"></a>
 
 # 📚 Referensi
 
