@@ -1,6 +1,6 @@
 <div align="center">
 
-![Razzia Logo](images/logo.svg)
+![Banner](images/banner.png)
 
 ## Razzia, Aplikasi Kuis Berbasis Web
 
@@ -9,8 +9,6 @@
 **Praktikum KDJK 2026/2027 · P1 — Kelompok 8**
 
 **Akses aplikasi Razzia pada: [razzia-kdjk.web.id](https://razzia-kdjk.web.id)**
-
-![Banner](images/banner.png)
 
 `Ubuntu 24.04 LTS` · `Docker` · `Docker Compose` · `Razzia` · `Caddy` · `HTTPS`
 
