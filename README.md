@@ -2,11 +2,13 @@
 
 ![Razzia Logo](images/logo.svg)
 
-### Razzia, Aplikasi Kuis Berbasis Web
+## Razzia, Aplikasi Kuis Berbasis Web
 
 *Dari aplikasi lokal menuju layanan kuis yang dapat diakses melalui server VPS.*
 
 **Praktikum KDJK 2026/2027 · P1 — Kelompok 8**
+
+**Akses aplikasi pada [razzia-kdjk.web.id](https://razzia-kdjk.web.id)**
 
 ---
 
@@ -29,9 +31,9 @@
 
 - [Sekilas Tentang](#sekilas-tentang)
 - [Instalasi](#instalasi)
+- [Empat Script Utama](#empat-script-utama)
 - [Konfigurasi](#konfigurasi)
 - [Maintenance](#maintenance)
-- [Otomatisasi](#otomatisasi)
 - [Cara Pemakaian](#cara-pemakaian)
 - [Pembahasan](#pembahasan)
 - [Referensi](#referensi)
@@ -79,7 +81,7 @@ Pemetaan port 127.0.0.1:3000:3000 membatasi publikasi port aplikasi ke loopback 
 
 Catatan: Docker Compose mengelola container Razzia, sedangkan konfigurasi Caddy, DNS domain, dan sertifikat TLS merupakan bagian terpisah yang perlu disiapkan agar aplikasi dapat diakses melalui HTTPS.
 
-### Lingkungan praktikum
+### Konfigurasi Deployment
 
 | Komponen | Detail |
 |---|---|
@@ -90,9 +92,22 @@ Catatan: Docker Compose mengelola container Razzia, sedangkan konfigurasi Caddy,
 | Direktori aplikasi | `/opt/razzia` |
 | Direktori backup | `/opt/razzia-backups` |
 | Port aplikasi | `3000` pada loopback `127.0.0.1` |
-| Domain praktikum | `razzia-kdjk.web.id` |
+| Domain | `razzia-kdjk.web.id` |
 
-*(Opsional: tambahkan diagram arsitektur deployment yang memperlihatkan browser, domain, VPS, Caddy, Docker, dan Razzia.)*
+---
+
+# 📄 Empat Script Utama
+
+Proyek ini menyediakan empat script shell untuk membantu pengelolaan aplikasi Razzia di VPS. Setiap script memiliki fungsi tersendiri, mulai dari instalasi awal hingga pencadangan, pemulihan, dan pembaruan aplikasi.
+
+| Script | Fungsi |
+|---|---|
+| `setup.sh` | Menyiapkan konfigurasi dan menjalankan instalasi awal Razzia pada VPS. |
+| `backup.sh` | Membuat arsip backup yang berisi konfigurasi deployment dan konfigurasi aplikasi. |
+| `restore.sh` | Memulihkan konfigurasi deployment dan aplikasi dari arsip backup. |
+| `update.sh` | Memperbarui image Razzia dengan mekanisme rollback jika terjadi kegagalan. |
+
+Keempat script tersebut dirancang untuk menyederhanakan pengelolaan aplikasi dan mengurangi kebutuhan menjalankan langkah-langkah secara manual. Penjelasan mengenai prasyarat, cara penggunaan, serta proses instalasi dan pemeliharaan tersedia pada bagian berikutnya.
 
 ---
 
@@ -100,7 +115,7 @@ Catatan: Docker Compose mengelola container Razzia, sedangkan konfigurasi Caddy,
 
 ### 1. Prasyarat
 
-Siapkan hal-hal berikut sebelum menjalankan skrip:
+Siapkan hal-hal berikut sebelum menjalankan script:
 
 - VPS Ubuntu 24.04 dengan akses `sudo` atau root.
 - Akses SSH ke VPS.
@@ -108,9 +123,9 @@ Siapkan hal-hal berikut sebelum menjalankan skrip:
 - Koneksi internet untuk mengunduh image aplikasi.
 - Domain yang DNS-nya diarahkan ke alamat IP publik VPS apabila aplikasi akan diakses melalui domain.
 - Port `80/tcp` dan `443/tcp` dapat diakses dari internet untuk konfigurasi HTTPS.
-- Empat skrip praktikum: `setup.sh`, `backup.sh`, `restore.sh`, dan `update.sh`.
+- Empat script utama: `setup.sh`, `backup.sh`, `restore.sh`, dan `update.sh`.
 
-> **Penting:** `setup.sh` memeriksa keberadaan Docker dan Docker Compose. Skrip ini tidak memasang Docker Engine. Pasang Docker terlebih dahulu menggunakan dokumentasi resmi Docker untuk Ubuntu.
+> **Penting:** `setup.sh` memeriksa keberadaan Docker dan Docker Compose. Script ini tidak memasang Docker Engine. Pasang Docker terlebih dahulu menggunakan dokumentasi resmi Docker untuk Ubuntu.
 
 ### 2. Hubungkan ke VPS
 
@@ -134,13 +149,11 @@ docker compose version
 sudo docker info
 ```
 
-Jika perintah Docker memerlukan hak administrator, gunakan `sudo` saat menjalankan skrip.
+Jika perintah Docker memerlukan hak administrator, gunakan `sudo` saat menjalankan script.
 
-*(Screenshot 1: terminal berhasil terhubung ke VPS dan menampilkan versi Ubuntu, Docker, serta Docker Compose.)*
+### 3. Siapkan berkas script
 
-### 3. Siapkan berkas skrip
-
-Simpan empat skrip pada direktori kerja, lalu pastikan nama berkasnya sesuai:
+Simpan empat script pada direktori kerja, lalu pastikan nama berkasnya sesuai:
 
 ```text
 deployment/
@@ -150,7 +163,7 @@ deployment/
 └── update.sh
 ```
 
-Jika skrip dikirim dari komputer lokal, unggah ke VPS menggunakan `scp` atau metode transfer berkas lain yang tersedia. Contoh:
+Jika script dikirim dari komputer lokal, unggah ke VPS menggunakan `scp` atau metode transfer berkas lain yang tersedia. Contoh:
 
 ```bash
 scp setup.sh backup.sh restore.sh update.sh USER@IP_PUBLIK_VPS:~/
@@ -164,15 +177,15 @@ ls -l ~/setup.sh ~/backup.sh ~/restore.sh ~/update.sh
 
 ### 4. Jalankan instalasi Razzia
 
-Jalankan skrip setup:
+Jalankan script setup:
 
 ```bash
 sudo bash ~/setup.sh
 ```
 
-Skrip akan melakukan hal-hal berikut:
+Script akan melakukan hal-hal berikut:
 
-1. Memastikan skrip dijalankan sebagai root dan Docker Compose tersedia.
+1. Memastikan script dijalankan sebagai root dan Docker Compose tersedia.
 2. Memasang `curl` dan `python3` jika belum tersedia.
 3. Membuat direktori `/opt/razzia` dan `/opt/razzia/config`.
 4. Membuat `compose.yml` jika belum ada.
@@ -205,13 +218,9 @@ curl -I http://127.0.0.1:3000/
 
 Jika endpoint merespons, aplikasi telah melewati pemeriksaan HTTP lokal. Ini belum memastikan domain publik atau HTTPS berfungsi.
 
-*(Screenshot 2: output `docker compose ps` yang menunjukkan container berjalan.)*
-
-*(Screenshot 3: terminal menunjukkan pemeriksaan HTTP lokal berhasil.)*
-
 ---
 
-# Konfigurasi
+# ⚙️ Konfigurasi
 
 ### 1. Struktur direktori
 
@@ -229,7 +238,7 @@ Setelah instalasi, struktur utama yang digunakan adalah:
 └── pre-update-<waktu>-<pid>.rollback.json
 ```
 
-Direktori backup dibuat oleh skrip pemeliharaan sesuai kebutuhan. Nama berkas aktual memuat penanda waktu dan/atau PID.
+Direktori backup dibuat oleh script pemeliharaan sesuai kebutuhan. Nama berkas aktual memuat penanda waktu dan/atau PID.
 
 ### 2. Docker Compose
 
@@ -257,7 +266,7 @@ Pemetaan loopback membatasi akses langsung ke port aplikasi dari luar VPS. Untuk
 
 ### 3. Password manager
 
-Berkas `/opt/razzia/config/game.json` menyimpan konfigurasi aplikasi. Skrip setup membuat konfigurasi awal seperti berikut:
+Berkas `/opt/razzia/config/game.json` menyimpan konfigurasi aplikasi. Script setup membuat konfigurasi awal seperti berikut:
 
 ```json
 {
@@ -265,7 +274,7 @@ Berkas `/opt/razzia/config/game.json` menyimpan konfigurasi aplikasi. Skrip setu
 }
 ```
 
-Contoh di atas hanya ilustrasi format. **Jangan menggunakan teks contoh sebagai password sebenarnya.**
+Contoh di atas hanya contoh format. Gunakan password buatan sendiri.
 
 Lindungi berkas konfigurasi karena memuat rahasia:
 
@@ -274,43 +283,39 @@ sudo ls -l /opt/razzia/config/game.json
 sudo stat -c '%a %n' /opt/razzia/config/game.json
 ```
 
-Skrip setup mengatur izin `game.json` menjadi `600` dan direktori `config` menjadi `700`. Jangan menampilkan atau menyalin password ke laporan, screenshot, repositori publik, maupun pesan yang dapat diakses orang lain.
+Script setup mengatur izin `game.json` menjadi `600` dan direktori `config` menjadi `700`. Jangan menampilkan atau menyalin password ke laporan, screenshot, repositori publik, maupun pesan yang dapat diakses orang lain.
 
-### 4. Domain dan HTTPS
+### 4. Domain dan HTTPS (Opsional)
 
-Domain praktikum: `razzia-kdjk.web.id`.
+Secara default, aplikasi Razzia berjalan pada `127.0.0.1:3000` di VPS. Jika ingin mengakses aplikasi melalui domain dengan HTTPS, pengguna perlu menyiapkan domain milik sendiri dan mengonfigurasi DNS, reverse proxy, serta sertifikat TLS.
 
 Agar aplikasi dapat diakses melalui HTTPS, pastikan:
 
-1. DNS domain mengarah ke IP publik VPS.
-2. Reverse proxy (misalnya Caddy) terpasang dan berjalan.
+1. Domain milik sendiri telah diarahkan ke IP publik VPS melalui DNS.
+2. Reverse proxy (misalnya Caddy) telah terpasang dan berjalan.
 3. Reverse proxy meneruskan permintaan domain ke `127.0.0.1:3000`.
-4. Firewall dan aturan penyedia VPS mengizinkan koneksi HTTP/HTTPS yang diperlukan.
-5. Sertifikat TLS berhasil diterbitkan dan diperpanjang secara otomatis oleh mekanisme yang dikonfigurasi.
+4. Firewall VPS dan aturan penyedia VPS mengizinkan koneksi HTTP/HTTPS yang diperlukan.
+5. Sertifikat TLS berhasil diterbitkan dan mekanisme perpanjangannya telah dikonfigurasi.
 
-Contoh konsep konfigurasi Caddy:
+Contoh konfigurasi Caddy:
 
 ```caddyfile
-razzia-kdjk.web.id {
+quiz.example.com {
     reverse_proxy 127.0.0.1:3000
 }
 ```
 
-Konfigurasi ini merupakan **contoh konfigurasi reverse proxy**, bukan sesuatu yang dibuat otomatis oleh empat skrip praktikum. Terapkan melalui konfigurasi Caddy yang benar pada server, lalu validasi dan muat ulang Caddy sesuai dokumentasi resminya.
+Ganti `quiz.example.com` dengan domain milik sendiri. Contoh tersebut merupakan konfigurasi reverse proxy yang perlu diterapkan secara manual dan **tidak dibuat otomatis oleh empat script utama** (`setup.sh`, `backup.sh`, `restore.sh`, dan `update.sh`).
 
-Verifikasi setelah konfigurasi selesai:
+Setelah konfigurasi selesai, verifikasi akses HTTPS menggunakan perintah berikut:
 
 ```bash
-curl -I https://razzia-kdjk.web.id
+curl -I https://quiz.example.com
 ```
-
-Hasil uji harus diperiksa bersama status DNS, sertifikat TLS, dan log reverse proxy. Jangan menyimpulkan HTTPS berhasil hanya dari `curl http://127.0.0.1:3000/`.
-
-*(Screenshot 4: domain Razzia terbuka di browser dengan HTTPS aktif dan indikator sertifikat valid. Tutupi informasi sensitif jika ada.)*
 
 ---
 
-# Maintenance
+# 🔧 Maintenance
 
 Pemeliharaan membantu menjaga konfigurasi tetap dapat dipulihkan dan mengurangi risiko saat melakukan perubahan.
 
@@ -322,7 +327,7 @@ Jalankan backup sebelum perubahan konfigurasi dan sebelum update:
 sudo bash ~/backup.sh
 ```
 
-Skrip membuat arsip pada:
+Script membuat arsip di direktori:
 
 ```text
 /opt/razzia-backups/
@@ -333,7 +338,7 @@ Isi backup meliputi:
 - `compose.yml`
 - Direktori `config/`, termasuk `config/game.json`
 
-Skrip memvalidasi arsip, membatasi izin akses, dan melaporkan lokasi berkas yang dibuat.
+Script memvalidasi arsip, membatasi izin akses, dan melaporkan lokasi berkas yang dibuat.
 
 **Batasan backup:** arsip ini tidak mencakup image Docker, konfigurasi Caddy, sertifikat TLS, maupun data di luar `config/`. Salin backup ke tempat penyimpanan lain di luar VPS. Jangan mengunggah arsip yang mengandung password ke repositori publik.
 
@@ -349,7 +354,7 @@ sudo bash ~/restore.sh /opt/razzia-backups/NAMA_BACKUP.tar.gz
 
 Ganti `NAMA_BACKUP.tar.gz` dengan nama arsip yang benar. Ketika diminta konfirmasi, ketik `YES` hanya setelah memeriksa bahwa berkas backup yang dipilih memang benar.
 
-Sebelum menerapkan restore, skrip:
+Sebelum menerapkan restore, script:
 
 1. Memvalidasi isi arsip dan jalur berkas.
 2. Mengekstrak berkas ke direktori staging.
@@ -357,7 +362,7 @@ Sebelum menerapkan restore, skrip:
 4. Meminta konfirmasi.
 5. Membuat *safety backup* dari konfigurasi aktif sebelum menggantinya.
 
-Setelah restore, skrip menguji respons HTTP lokal dan mencoba mengembalikan konfigurasi sebelumnya jika proses gagal. Mekanisme rollback tersebut tidak memulihkan image Docker atau konfigurasi Caddy/TLS.
+Setelah restore, script menguji respons HTTP lokal dan mencoba mengembalikan konfigurasi sebelumnya jika proses gagal. Mekanisme rollback tersebut tidak memulihkan image Docker atau konfigurasi Caddy/TLS.
 
 ### 3. Update aplikasi
 
@@ -367,7 +372,7 @@ Jalankan:
 sudo bash ~/update.sh
 ```
 
-Skrip update:
+Script update:
 
 1. Memvalidasi deployment aktif.
 2. Membuat backup konfigurasi.
@@ -377,9 +382,9 @@ Skrip update:
 6. Memeriksa endpoint HTTP lokal.
 7. Mencoba menjalankan kembali image lama jika update gagal atau pemeriksaan HTTP tidak berhasil.
 
-Skrip ini sengaja dibatasi untuk deployment Docker Compose dengan **tepat satu service dan satu container**. Jangan menganggapnya sebagai mekanisme update universal untuk semua stack Compose.
+Script ini sengaja dibatasi untuk deployment Docker Compose dengan **tepat satu service dan satu container**. Jangan menganggapnya sebagai mekanisme update universal untuk semua stack Compose.
 
-Jika rollback image diperlukan, skrip menampilkan lokasi berkas `*.rollback.json` dan nama image rollback. Simpan informasi tersebut dan ikuti instruksi output skrip. Tag image rollback dipertahankan; lakukan pembersihan hanya setelah yakin image tersebut tidak lagi diperlukan.
+Jika rollback image diperlukan, script menampilkan lokasi berkas `*.rollback.json` dan nama image rollback. Simpan informasi tersebut dan ikuti instruksi output script. Tag image rollback dipertahankan; lakukan pembersihan hanya setelah yakin image tersebut tidak lagi diperlukan.
 
 ### 4. Pemeriksaan rutin
 
@@ -399,48 +404,18 @@ sudo docker compose -f /opt/razzia/compose.yml logs --tail=100
 df -h
 ```
 
----
-
-# Otomatisasi
-
-Empat skrip shell disiapkan untuk menyederhanakan pekerjaan berulang. Jalankan dari direktori tempat skrip disimpan atau gunakan path lengkap.
-
-| Skrip | Fungsi | Perintah |
-|---|---|---|
-| `setup.sh` | Instalasi awal Razzia | `sudo bash setup.sh` |
-| `backup.sh` | Backup konfigurasi | `sudo bash backup.sh` |
-| `restore.sh` | Restore dari arsip | `sudo bash restore.sh /path/backup.tar.gz` |
-| `update.sh` | Update image dengan upaya rollback | `sudo bash update.sh` |
-
-### Mengapa menggunakan skrip?
-
-- **Konsisten:** langkah pemeriksaan dan operasi dijalankan dengan urutan yang sama.
-- **Lebih aman:** skrip memvalidasi beberapa konfigurasi dan membatasi izin berkas yang berisi rahasia.
-- **Mudah diulang:** perintah dapat dijalankan kembali ketika diperlukan.
-- **Lebih mudah diaudit:** operasi penting menghasilkan pesan status dan lokasi backup.
-
-### Hal yang perlu diperhatikan
-
-- Skrip harus dijalankan dengan hak root melalui `sudo`.
-- Skrip setup memerlukan Docker Engine dan Docker Compose yang sudah tersedia.
-- Restore membutuhkan path arsip backup yang benar.
-- Backup menyimpan password di dalam arsip konfigurasi; lindungi dan pindahkan arsip dengan aman.
-- Update dan restore memeriksa HTTP lokal, bukan kesehatan HTTPS publik.
-- Jalankan skrip hanya setelah memahami perubahan yang akan dilakukan dan membaca prompt konfirmasinya.
-
-*(Screenshot 5: terminal menampilkan pesan backup berhasil beserta lokasi arsip. Pastikan tidak ada password yang terlihat.)*
 
 ---
 
-# Cara Pemakaian
+# 💡 Cara Pemakaian
 
-### 1. Membuka aplikasi
+### 1. Membuka Aplikasi
 
-Setelah deployment dan konfigurasi domain/HTTPS selesai, buka:
+Setelah deployment dan konfigurasi domain/HTTPS selesai, buka domain yang telah dikonfigurasi. Pada deployment kelompok ini, alamat yang digunakan adalah:
 
-**https://razzia-kdjk.web.id**
+**[https://razzia-kdjk.web.id](https://razzia-kdjk.web.id)**
 
-Jika domain belum dikonfigurasi atau HTTPS belum aktif, gunakan pemeriksaan lokal pada server:
+Jika domain belum dikonfigurasi atau HTTPS belum aktif, jalankan pemeriksaan berikut langsung pada VPS:
 
 ```bash
 curl -I http://127.0.0.1:3000/
@@ -448,103 +423,53 @@ curl -I http://127.0.0.1:3000/
 
 Alamat loopback tersebut hanya dapat digunakan dari VPS itu sendiri. Untuk mengakses aplikasi dari perangkat lain, selesaikan konfigurasi DNS dan reverse proxy terlebih dahulu.
 
-#### Tampilan aplikasi Razzia
+### 2. Peserta (User)
 
-**1. Halaman utama sebelum bergabung ke sesi**
+1. Buka aplikasi Razzia melalui browser.
+![Tampilan Awal User](images/1.png)
+2. Masukkan kode sesi yang diberikan oleh manager.
+3. Tunggu hingga peserta lain siap dan permainan dimulai.
+![Menunggu Peserta Lain](images/2.png)
+4. Jawab pertanyaan yang ditampilkan sebelum waktu habis.
+5.[Menjawab Pertanyaan Kuis](images/3.png)
 
-![Tampilan utama Razzia sebelum memasukkan kode](images/1.png)
+### 3. Admin (Manager)
 
-*Tampilan awal aplikasi ketika pengguna belum memasukkan kode sesi.*
-
-**2. Ruang permainan saat menunggu peserta lain**
-
-![Tampilan Razzia setelah masuk dan menunggu pemain lain](images/2.png)
-
-*Tampilan ruang permainan setelah kode dimasukkan, ketika pemain lain masih ditunggu untuk bergabung.*
-
-**3. Demo kuis sedang berlangsung**
-
-![Tampilan Razzia saat demo kuis](images/3.png)
-
-*Tampilan aplikasi ketika sesi demo kuis sedang berlangsung.*
-
-### 2. Alur penggunaan kuis
-
-Alur umum penggunaan aplikasi kuis adalah:
-
-1. **Manager membuka halaman pengelolaan.** Gunakan alamat halaman manager yang disediakan aplikasi, lalu autentikasi dengan password manager yang telah dikonfigurasi.
-2. **Manager menyiapkan kuis.** Buat atau pilih kuis dan periksa pertanyaan sebelum sesi dimulai.
-3. **Manager memulai sesi permainan.** Ikuti instruksi yang ditampilkan aplikasi untuk membuka sesi.
-4. **Peserta bergabung.** Bagikan URL permainan atau kode/identitas ruang yang ditampilkan aplikasi, jika tersedia.
-5. **Peserta menjawab pertanyaan.** Peserta membuka halaman permainan melalui browser dan mengikuti instruksi pada layar.
-6. **Manager memantau sesi.** Gunakan tampilan yang tersedia untuk memantau peserta dan hasil permainan.
-
-Nama menu, mekanisme room, dan tampilan dapat berbeda sesuai versi Razzia yang sedang dijalankan. Gunakan elemen yang benar-benar tampil pada versi deployment praktikum; jangan mengasumsikan fitur yang belum diverifikasi.
-
-### 3. Skenario demonstrasi
-
-Gunakan data dummy berikut untuk demonstrasi kelas, lalu sesuaikan dengan fitur yang tersedia di aplikasi.
-
-**Contoh sesi:** *Kuis Dasar Jaringan Komputer*
-
-| No. | Pertanyaan | Jawaban benar |
-|---|---|---|
-| 1 | Apa kepanjangan dari IP pada istilah IP address? | Internet Protocol |
-| 2 | Protokol apa yang digunakan untuk mengakses halaman web terenkripsi? | HTTPS |
-| 3 | Apa fungsi DNS secara umum? | Memetakan nama domain ke alamat IP |
-| 4 | Port default HTTPS adalah berapa? | 443 |
-| 5 | Apa fungsi reverse proxy pada deployment ini? | Meneruskan permintaan ke aplikasi backend |
-
-Tabel tersebut adalah **contoh materi kuis**, bukan bukti bahwa data ini sudah dimasukkan ke dalam server. Masukkan pertanyaan melalui antarmuka aplikasi jika format dan fitur kuis pada versi yang dipakai mendukungnya.
-
-### 4. Dokumentasi hasil uji
-
-Lengkapi tabel berikut berdasarkan pengujian nyata. Ubah status setelah setiap pengujian selesai.
-
-| Pengujian | Hasil yang diharapkan | Hasil praktikum |
-|---|---|---|
-| Container berjalan | Service Razzia aktif | *(Isi berdasarkan hasil aktual)* |
-| HTTP lokal | Endpoint `127.0.0.1:3000` merespons | *(Isi berdasarkan hasil aktual)* |
-| Halaman web | Halaman Razzia tampil di browser | *(Isi berdasarkan hasil aktual)* |
-| Login manager | Password yang benar diterima | *(Isi berdasarkan hasil aktual)* |
-| Sesi kuis | Manager dapat memulai sesi | *(Isi berdasarkan hasil aktual)* |
-| Peserta | Peserta dapat bergabung dan menjawab | *(Isi berdasarkan hasil aktual)* |
-| Domain HTTPS | Domain terbuka dengan TLS valid | *(Isi berdasarkan hasil aktual)* |
-| Backup | Arsip tercipta dan tervalidasi | *(Isi berdasarkan hasil aktual)* |
-| Restore | Konfigurasi dipulihkan dan aplikasi diuji | *(Isi berdasarkan hasil aktual)* |
-| Update | Update berhasil atau rollback ditangani | *(Isi berdasarkan hasil aktual)* |
-
-*(Screenshot 7: manager menyiapkan kuis dengan data dummy.)*
-
-*(Screenshot 8: tampilan peserta saat bergabung atau menjawab pertanyaan.)*
-
-*(Screenshot 9: hasil kuis atau ringkasan sesi, apabila tersedia pada versi aplikasi.)*
-
-> **Etika dokumentasi:** gunakan akun dan data dummy. Jangan tampilkan password, token, kredensial VPS, private key, atau isi rahasia dari `game.json` pada screenshot laporan.
+1. Buka aplikasi Razzia dan masuk ke halaman manager menggunakan password manager.
+![Tampilan Awal Manager](images/4.png)
+2. Buka tab `Quizz` pada halaman `Configurations`.
+3. Buat kuis baru hingga editor kuis terbuka.
+![Halaman Editor Kuis](images/5.png)
+4. Masukkan judul kuis, tambahkan pertanyaan dan pilihan jawaban, lalu tandai jawaban yang benar.
+5. Atur poin dan waktu sesuai kebutuhan, kemudian klik `Save`.
+6. Buka tab `Play`, pilih kuis yang telah dibuat, lalu klik `Start game`.
+![Persiapan Memulai Kuis](images/6.png)
+7. Bagikan kode atau informasi bergabung kepada peserta.
+8. Pantau jalannya permainan melalui antarmuka aplikasi.
 
 ---
 
-# Pembahasan
+# 💬 Pembahasan
 
-### Kelebihan
+### ✅ Kelebihan
 
 - **Tidak perlu membuat aplikasi dari nol.** Deployment menggunakan aplikasi open-source yang sudah tersedia.
 - **Isolasi aplikasi melalui container.** Docker Compose memudahkan pengelolaan service dan pemetaan port.
 - **Port backend tidak langsung dibuka ke internet.** Konfigurasi dasar mengikat port aplikasi ke `127.0.0.1`, sehingga akses publik direncanakan melalui reverse proxy.
 - **Konfigurasi terpisah dari image.** Direktori `config/` dipasang sebagai volume dan dapat dicadangkan.
-- **Tersedia skrip pemeliharaan.** Backup, restore, dan update memiliki pemeriksaan awal serta pesan status.
+- **Tersedia script pemeliharaan.** Backup, restore, dan update memiliki pemeriksaan awal serta pesan status.
 - **Ada upaya rollback.** Restore membuat safety backup sebelum mengganti konfigurasi, sedangkan update menyimpan image lama untuk upaya rollback.
 
-### Kekurangan dan batasan
+### ❌ Kekurangan dan batasan
 
 - **Memerlukan administrasi server.** Pengguna perlu memahami SSH, Linux, Docker, DNS, firewall, dan reverse proxy.
-- **HTTPS tidak otomatis disiapkan oleh skrip ini.** DNS, Caddy, dan sertifikat TLS harus dikonfigurasi serta diuji secara terpisah.
+- **HTTPS tidak otomatis disiapkan oleh script ini.** DNS, Caddy, dan sertifikat TLS harus dikonfigurasi serta diuji secara terpisah.
 - **Backup tidak mencakup seluruh server.** Image Docker, konfigurasi Caddy, sertifikat TLS, dan data di luar direktori konfigurasi tidak termasuk.
 - **Rollback memiliki batasan.** Pemulihan konfigurasi tidak sama dengan pemulihan seluruh VPS; update hanya mendukung satu service dan satu container.
 - **Pembaruan menggunakan tag `latest`.** Versi aplikasi dapat berubah ketika image baru diunduh. Untuk deployment yang membutuhkan reproduktibilitas tinggi, versi image sebaiknya ditetapkan dan diuji secara terencana.
 - **Pemeriksaan kesehatan masih sederhana.** Respons HTTP lokal belum membuktikan seluruh fitur kuis, login manager, DNS, dan HTTPS berjalan normal.
 
-### Perbandingan singkat
+### ⚖️ Perbandingan dengan aplikasi serupa
 
 Perbandingan berikut bersifat umum. Kemampuan rinci tiap produk bergantung pada versi dan konfigurasi yang digunakan.
 
@@ -560,7 +485,7 @@ Perbandingan berikut bersifat umum. Kemampuan rinci tiap produk bergantung pada 
 
 ---
 
-# Referensi
+# 📚 Referensi
 
 1. Razzia — repositori sumber aplikasi.  
    https://github.com/ralex91/razzia
@@ -575,14 +500,10 @@ Perbandingan berikut bersifat umum. Kemampuan rinci tiap produk bergantung pada 
 6. Cloudflare Docs — dokumentasi DNS.  
    https://developers.cloudflare.com/dns/
 
-> **Catatan referensi:** skrip `setup.sh`, `backup.sh`, `restore.sh`, dan `update.sh` yang digunakan pada praktikum merupakan berkas implementasi lokal kelompok. Dokumentasikan versi final berkas tersebut bersama laporan atau repositori praktikum agar langkah yang dijelaskan dapat ditelusuri.
-
 ---
 
 <div align="center">
 
 **RAZZIA · KDJK 2026/2027 · P1 — KELOMPOK 8**
-
-*Deploy with care. Back up before change. Verify before claiming success.*
 
 </div>
