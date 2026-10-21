@@ -1,8 +1,7 @@
 <div align="center">
 
-![Razzia Banner](images/banner.png)
+![Razzia Logo](images/logo.svg)
 
-# ⚡ RAZZIA
 ### Panduan Deployment Aplikasi Kuis Berbasis Web
 
 **Praktikum KDJK 2026/2027 · P1 — Kelompok 8**
